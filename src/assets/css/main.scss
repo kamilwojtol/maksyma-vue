@@ -1,0 +1,18 @@
+@import "./reset";
+@import "./colors";
+@import "./fonts";
+
+/*
+Global styles
+*/
+
+#app {
+  background-color: $cl-primary;
+}
+
+.btn {
+  border: 0;
+  background-color: transparent;
+  padding: 15px;
+  cursor: pointer;
+}
