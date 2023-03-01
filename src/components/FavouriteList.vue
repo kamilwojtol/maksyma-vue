@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useFavouritesStore } from "@/stores/favourites";
+import Button from "./UI/Button.vue";
 
 const favourites = ref(<any>[]);
 
 const favStore: any = useFavouritesStore();
-refreshFavourites();
+
+onMounted(() => {
+  refreshFavourites();
+});
 
 function deleteFavourite(id: string) {
   favStore.deleteFromFavourites(id);
@@ -19,6 +23,7 @@ function refreshFavourites() {
 
 <template>
   <div class="favourite-list" v-if="favourites.length">
+    <h3 class="title">My favourite quotes</h3>
     <div
       class="favourite-item"
       v-for="favourite in favourites"
@@ -26,10 +31,29 @@ function refreshFavourites() {
     >
       <h3 class="favourite-text">{{ favourite.content }}</h3>
       <p class="favourite-item">{{ favourite.author }}</p>
-      <button @click="deleteFavourite(favourite._id)">
+      <Button @click="deleteFavourite(favourite._id)">
         Delete from Favourites
-      </button>
+      </Button>
     </div>
   </div>
   <div v-else>You don't have any favourites :(</div>
 </template>
+
+<style lang="scss" scoped>
+.title {
+  font-family: $font-primary;
+  font-size: 32px;
+}
+
+.favourite-text {
+  font-family: $font-primary;
+  font-weight: 600;
+  font-size: 24px;
+  font-style: italic;
+}
+
+.favourite-item {
+  font-family: $font-primary;
+  font-size: 16px;
+}
+</style>

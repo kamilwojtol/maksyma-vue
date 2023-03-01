@@ -1,9 +1,5 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
-import { useFavouritesStore } from "../stores/favourites";
-import Button from "./UI/Button.vue";
-
-const favourites = useFavouritesStore();
 
 const props = defineProps({
   quote: Object as PropType<any>,
@@ -15,9 +11,6 @@ const props = defineProps({
     <h3 class="maxim-title">{{ props.quote?.content }}</h3>
     <p class="maxim-subtitle">{{ props.quote?.author }}</p>
   </div>
-  <Button @click="favourites.addToFavourites(props.quote)">
-    Add to Favourites
-  </Button>
 </template>
 
 <style scoped lang="scss">

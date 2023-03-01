@@ -6,17 +6,34 @@ export const useFavouritesStore = defineStore("favourites", () => {
 
   function addToFavourites(payload: any) {
     if (favs.value) {
+      localStorage.setItem(
+        "favourites",
+        JSON.stringify([...getFavourites(), payload])
+      );
       favs.value.push(payload);
     }
   }
 
-  function getFavourites() {
+  function getFavourites(): string[] {
+    const localFavs = localStorage.getItem("favourites");
+
+    if (localFavs) {
+      favs.value = JSON.parse(localFavs);
+      return JSON.parse(localFavs);
+    }
+
     return favs.value;
   }
 
   function deleteFromFavourites(id: string) {
     favs.value = favs.value.filter((fav: any) => !(fav._id === id));
+    localStorage.setItem("favourites", JSON.stringify(favs.value));
   }
 
-  return { favs, addToFavourites, getFavourites, deleteFromFavourites };
+  return {
+    favs,
+    addToFavourites,
+    getFavourites,
+    deleteFromFavourites,
+  };
 });
