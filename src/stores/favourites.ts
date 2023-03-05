@@ -30,10 +30,23 @@ export const useFavouritesStore = defineStore("favourites", () => {
     localStorage.setItem("favourites", JSON.stringify(favs.value));
   }
 
+  function isInFavourites(randomQuote: any): boolean {
+    if (randomQuote._id && favs.value.length) {
+      return Boolean(
+        favs.value.find((quote: any) => {
+          quote._id == randomQuote._id;
+        })
+      );
+    }
+
+    return false;
+  }
+
   return {
     favs,
     addToFavourites,
     getFavourites,
     deleteFromFavourites,
+    isInFavourites,
   };
 });

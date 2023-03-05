@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { defineProps } from "vue";
-
 const props = defineProps({
   disabled: {
     type: Boolean,
@@ -10,7 +8,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <button :disabled="disabled" class="btn">
+  <button :disabled="props.disabled" class="btn">
     <slot />
   </button>
 </template>
