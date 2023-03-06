@@ -3,14 +3,18 @@ import { defineStore } from "pinia";
 
 export const useFavouritesStore = defineStore("favourites", () => {
   const favs = ref(<string[]>[]);
+  const isInFavs = ref(false);
 
   function addToFavourites(payload: any) {
-    if (favs.value) {
+    isInFavourites(payload);
+
+    if (!isInFavs.value) {
       localStorage.setItem(
         "favourites",
         JSON.stringify([...getFavourites(), payload])
       );
       favs.value.push(payload);
+      isInFavs.value = true;
     }
   }
 
@@ -30,23 +34,23 @@ export const useFavouritesStore = defineStore("favourites", () => {
     localStorage.setItem("favourites", JSON.stringify(favs.value));
   }
 
-  function isInFavourites(randomQuote: any): boolean {
-    if (randomQuote._id && favs.value.length) {
-      return Boolean(
+  function isInFavourites(fav: any): void {
+    if (fav._id && favs.value.length) {
+      isInFavs.value = Boolean(
         favs.value.find((quote: any) => {
-          quote._id == randomQuote._id;
+          return quote._id === fav._id;
         })
       );
+    } else {
+      isInFavs.value = false;
     }
-
-    return false;
   }
 
   return {
     favs,
+    isInFavs,
     addToFavourites,
     getFavourites,
     deleteFromFavourites,
-    isInFavourites,
   };
 });

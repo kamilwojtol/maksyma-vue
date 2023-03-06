@@ -48,7 +48,7 @@ onMounted(async () => {
       Previous Quote
     </Button>
     <Button
-      :disabled="favourites.isInFavourites(randomQuote)"
+      :disabled="favourites.isInFavs"
       @click="favourites.addToFavourites(randomQuote)"
     >
       Add to Favourites
