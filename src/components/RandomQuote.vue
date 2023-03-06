@@ -32,11 +32,13 @@ const nextQuote = async () => {
     activeQuote.value++;
   } else {
     await refreshQuote();
+    favourites.isInFavourites(randomQuote.value);
   }
 };
 
 onMounted(async () => {
   await refreshQuote();
+  favourites.isInFavourites(randomQuote.value);
 });
 </script>
 

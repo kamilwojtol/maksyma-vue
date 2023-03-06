@@ -21,5 +21,9 @@ button.btn {
   background-color: $cl-primary;
   color: $cl-black;
   margin: 6px;
+
+  &[disabled] {
+    opacity: 0.5;
+  }
 }
 </style>

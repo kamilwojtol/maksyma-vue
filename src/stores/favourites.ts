@@ -6,8 +6,6 @@ export const useFavouritesStore = defineStore("favourites", () => {
   const isInFavs = ref(false);
 
   function addToFavourites(payload: any) {
-    isInFavourites(payload);
-
     if (!isInFavs.value) {
       localStorage.setItem(
         "favourites",
@@ -41,7 +39,9 @@ export const useFavouritesStore = defineStore("favourites", () => {
           return quote._id === fav._id;
         })
       );
+      console.log(isInFavs.value);
     } else {
+      console.log(false);
       isInFavs.value = false;
     }
   }
@@ -52,5 +52,6 @@ export const useFavouritesStore = defineStore("favourites", () => {
     addToFavourites,
     getFavourites,
     deleteFromFavourites,
+    isInFavourites,
   };
 });
