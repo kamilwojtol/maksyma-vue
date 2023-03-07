@@ -14,15 +14,21 @@ const props = defineProps({
 </template>
 
 <style scoped lang="scss">
+.maxim {
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+}
+
 .maxim-title {
   font-family: $font-primary;
   font-weight: 600;
-  font-size: 48px;
+  font-size: 24px;
   font-style: italic;
 }
 
 .maxim-subtitle {
   font-family: $font-primary;
-  font-size: 24px;
+  font-size: 16px;
 }
 </style>

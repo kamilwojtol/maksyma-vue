@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import { useFavouritesStore } from "@/stores/favourites";
 import Button from "./UI/Button.vue";
+import ShareButton from "./ShareButton.vue";
 
 const favourites = ref(<any>[]);
 
@@ -34,6 +35,7 @@ function refreshFavourites() {
       <Button @click="deleteFavourite(favourite._id)">
         Delete from Favourites
       </Button>
+      <ShareButton :quote="favourite"> Share </ShareButton>
     </div>
   </div>
   <div v-else>You don't have any favourites :(</div>

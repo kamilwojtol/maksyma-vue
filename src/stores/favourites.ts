@@ -39,10 +39,6 @@ export const useFavouritesStore = defineStore("favourites", () => {
           return quote._id === fav._id;
         })
       );
-      console.log(isInFavs.value);
-    } else {
-      console.log(false);
-      isInFavs.value = false;
     }
   }
 
