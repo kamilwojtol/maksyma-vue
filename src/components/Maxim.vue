@@ -17,7 +17,7 @@ const props = defineProps({
 .maxim {
   display: flex;
   flex-direction: column;
-  margin: 0 20px;
+  margin: 32px 20px;
 }
 
 .maxim-title {

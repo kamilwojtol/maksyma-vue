@@ -33,7 +33,7 @@ export const useFavouritesStore = defineStore("favourites", () => {
   }
 
   function isInFavourites(fav: any): void {
-    if (fav._id && favs.value.length) {
+    if (fav._id) {
       isInFavs.value = Boolean(
         favs.value.find((quote: any) => {
           return quote._id === fav._id;

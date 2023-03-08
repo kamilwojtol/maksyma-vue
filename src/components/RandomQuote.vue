@@ -1,20 +1,18 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import "vue3-carousel/dist/carousel.css";
-import { Carousel, Slide } from "vue3-carousel";
 import Maxim from "./Maxim.vue";
 import { getRandomQuote } from "../services/MaximService";
 import Button from "./UI/Button.vue";
 import ShareButton from "./ShareButton.vue";
 import { useFavouritesStore } from "../stores/favourites";
-import useSwipe from "../composables/useSwipe";
+import Loader from "./UI/Loader.vue";
 
 const favourites = useFavouritesStore();
 
 const randomQuote = ref(<any>[]);
 const quoteHistory = ref(<any>[]);
-const carousel = ref(<any>[]);
-let activeQuote = ref(0);
+const activeQuote = ref(0);
+const isLoading = ref(true);
 
 const refreshQuote = async () => {
   const quote = await getRandomQuote();
@@ -24,10 +22,11 @@ const refreshQuote = async () => {
   randomQuote.value = quote;
 };
 
-const prevQuote = () => {
+const prevQuote = (): void => {
   if (activeQuote.value > 1) {
     activeQuote.value--;
     randomQuote.value = quoteHistory.value[activeQuote.value - 1];
+    favourites.isInFavourites(randomQuote.value);
   }
 };
 
@@ -35,50 +34,66 @@ const nextQuote = async () => {
   if (quoteHistory.value.length > activeQuote.value) {
     randomQuote.value = quoteHistory.value[activeQuote.value];
     activeQuote.value++;
+    favourites.isInFavourites(randomQuote.value);
   } else {
+    isLoading.value = true;
     await refreshQuote();
+    isLoading.value = false;
     favourites.isInFavourites(randomQuote.value);
   }
 };
 
 onMounted(async () => {
+  isLoading.value = false;
   await refreshQuote();
-  useSwipe(carousel.value);
+  isLoading.value = false;
   favourites.isInFavourites(randomQuote.value);
 });
 </script>
 
 <template>
-  <div ref="carousel" v-if="randomQuote" class="random-quote">
-    <Carousel :items-to-show="1">
-      <Slide class="maxim-slide" v-for="slide in quoteHistory" :key="slide">
-        <Maxim :quote="randomQuote" />
-        <!-- <Button @click="prevQuote" :disabled="activeQuote === 1">
-          Previous Quote
-        </Button> -->
-        <div class="maxim-btn-panel">
-          <Button
-            :disabled="favourites.isInFavs"
-            @click="favourites.addToFavourites(randomQuote)"
-          >
-            Add to Favourites
-          </Button>
-          <ShareButton :quote="randomQuote"> Share </ShareButton>
-        </div>
-        <!-- <Button @click="nextQuote">Next Quote</Button> -->
-      </Slide>
-    </Carousel>
+  <div v-if="!isLoading" class="random-quote">
+    <Maxim class="maxim-quote" :quote="randomQuote" />
+    <div class="maxim-btn-panel">
+      <Button @click="prevQuote" :disabled="activeQuote === 1">
+        Previous
+      </Button>
+      <Button
+        :disabled="favourites.isInFavs"
+        @click="favourites.addToFavourites(randomQuote)"
+      >
+        Add to Favourites
+      </Button>
+      <ShareButton :quote="randomQuote"> Share </ShareButton>
+      <Button @click="nextQuote">Next</Button>
+    </div>
   </div>
+  <Loader class="loader" v-else></Loader>
 </template>
 
 <style lang="scss">
-.maxim-slide {
-  display: flex;
-  flex-direction: column;
+.maxim-quote {
+  margin-bottom: 24px;
+  align-items: center;
 }
 
 .maxim-btn-panel {
+  margin-top: 24px;
+  position: absolute;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  bottom: 8px;
+
+  @media (min-width: 768px) {
+    left: calc(50% - 227px);
+  }
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
 }
 </style>

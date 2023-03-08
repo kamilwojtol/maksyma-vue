@@ -31,20 +31,38 @@ function refreshFavourites() {
       :key="favourite._id"
     >
       <h3 class="favourite-text">{{ favourite.content }}</h3>
-      <p class="favourite-item">{{ favourite.author }}</p>
-      <Button @click="deleteFavourite(favourite._id)">
-        Delete from Favourites
-      </Button>
+      <p class="favourite-author">{{ favourite.author }}</p>
+      <Button @click="deleteFavourite(favourite._id)"> Delete </Button>
       <ShareButton :quote="favourite"> Share </ShareButton>
     </div>
   </div>
-  <div v-else>You don't have any favourites :(</div>
+  <div class="title title-error" v-else>
+    You don't have any favourite quotes, add one in Home page 😊
+  </div>
 </template>
 
 <style lang="scss" scoped>
+.favourite-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0 16px;
+
+  @media (min-width: 768px) {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
 .title {
   font-family: $font-primary;
   font-size: 32px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+
+  &-error {
+    margin: 32px 0;
+  }
 }
 
 .favourite-text {
@@ -57,5 +75,14 @@ function refreshFavourites() {
 .favourite-item {
   font-family: $font-primary;
   font-size: 16px;
+  margin: 16px 0;
+}
+
+.favourite-author {
+  margin: 8px 0;
+}
+
+button.btn {
+  margin-left: 0;
 }
 </style>

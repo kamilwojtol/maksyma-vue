@@ -1,7 +1,6 @@
-- stylowanie strony (działająca karuzela)
+- stylowanie strony
 - loader przy wczytywaniu cytatu
 - wyszukiwarka w ulubionych
 - grupowanie według teamtyki
-- udostępnianie cytatu (WebShareAPI)
 - dodawanie własnych cytatów do listy
 - otypować wszystko
