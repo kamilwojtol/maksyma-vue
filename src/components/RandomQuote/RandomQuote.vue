@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import Maxim from "./Maxim.vue";
-import { getRandomQuote } from "../services/MaximService";
-import Button from "./UI/Button.vue";
-import ShareButton from "./ShareButton.vue";
-import { useFavouritesStore } from "../stores/favourites";
-import Loader from "./UI/Loader.vue";
+import Maxim from "../UI/Maxim.vue";
+import { getRandomQuote } from "../../services/MaximService";
+import Button from "../UI/Button.vue";
+import ShareButton from "../UI/ShareButton.vue";
+import { useFavouritesStore } from "../../stores/favourites";
+import Loader from "../UI/Loader.vue";
 
 const favourites = useFavouritesStore();
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FavouriteList from "@/components/FavouriteList.vue";
+import FavouriteList from "@/components/Favourites/FavouriteList.vue";
 </script>
 
 <template>
@@ -7,3 +7,10 @@ import FavouriteList from "@/components/FavouriteList.vue";
     <FavouriteList />
   </main>
 </template>
+
+<style lang="scss">
+main {
+  overflow-y: auto;
+  padding-bottom: 16px;
+}
+</style>

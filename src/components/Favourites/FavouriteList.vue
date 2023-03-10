@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useFavouritesStore } from "@/stores/favourites";
-import Button from "./UI/Button.vue";
-import ShareButton from "./ShareButton.vue";
+import Button from "../UI/Button.vue";
+import ShareButton from "../UI/ShareButton.vue";
+import Maxim from "../UI/Maxim.vue";
 
-const favourites = ref(<any>[]);
+const favourites = ref<any>([]);
 
 const favStore: any = useFavouritesStore();
+const searchQuery = ref<string>("");
 
 onMounted(() => {
   refreshFavourites();
@@ -20,25 +22,39 @@ function deleteFavourite(id: string) {
 function refreshFavourites() {
   favourites.value = favStore.getFavourites();
 }
+
+const filterFavs = computed(() => {
+  if (searchQuery.value.length > 3) {
+    const filteredArray = favourites.value.filter((fav: any) => {
+      return (
+        fav.author.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+        fav.content.toLowerCase().includes(searchQuery.value.toLowerCase())
+      );
+    });
+    favourites.value = filteredArray;
+  } else {
+    refreshFavourites();
+  }
+});
 </script>
 
 <template>
-  <div class="favourite-list" v-if="favourites.length">
+  <div class="favourite-list">
     <h3 class="title">My favourite quotes</h3>
+    <input type="text" v-model="searchQuery" :keydown="filterFavs" />
     <div
       class="favourite-item"
       v-for="favourite in favourites"
       :key="favourite._id"
     >
-      <h3 class="favourite-text">{{ favourite.content }}</h3>
-      <p class="favourite-author">{{ favourite.author }}</p>
+      <Maxim class="maxim" :quote="favourite" />
       <Button @click="deleteFavourite(favourite._id)"> Delete </Button>
       <ShareButton :quote="favourite"> Share </ShareButton>
     </div>
   </div>
-  <div class="title title-error" v-else>
+  <!-- <div class="title title-error" v-else>
     You don't have any favourite quotes, add one in Home page 😊
-  </div>
+  </div> -->
 </template>
 
 <style lang="scss" scoped>
@@ -65,21 +81,14 @@ function refreshFavourites() {
   }
 }
 
-.favourite-text {
-  font-family: $font-primary;
-  font-weight: 600;
-  font-size: 24px;
-  font-style: italic;
-}
-
 .favourite-item {
   font-family: $font-primary;
   font-size: 16px;
   margin: 16px 0;
-}
 
-.favourite-author {
-  margin: 8px 0;
+  .maxim {
+    margin: 20px 0;
+  }
 }
 
 button.btn {

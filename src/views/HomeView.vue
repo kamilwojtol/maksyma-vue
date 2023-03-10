@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import RandomQuote from "../components/RandomQuote.vue";
+import RandomQuote from "../components/RandomQuote/RandomQuote.vue";
 </script>
 
 <template>

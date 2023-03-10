@@ -1,5 +1,3 @@
-- stylowanie strony
-- loader przy wczytywaniu cytatu
 - wyszukiwarka w ulubionych
 - grupowanie według teamtyki
 - dodawanie własnych cytatów do listy
