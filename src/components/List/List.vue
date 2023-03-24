@@ -1,23 +1,30 @@
 <script setup lang="ts">
 import { getQuotesListWithTag } from "@/services/MaximService";
 import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import Maxim from "../UI/Maxim.vue";
 
 const route = useRoute();
-const quotes = ref([]);
+const router = useRouter();
 
-onMounted(async () => {
+const quotes = ref();
+
+const refreshPage = async (reload?: boolean): Promise<void> => {
   const quotesWithParams = await getQuotesListWithTag(
     route.params.item.toString()
   );
-  quotes.value = quotesWithParams.results;
+  quotes.value = await quotesWithParams.results;
+  reload ? router.go(0) : null;
+};
+
+onMounted(async () => {
+  await refreshPage();
 });
 </script>
 
 <template>
   <div v-if="quotes">
-    <Maxim v-for="quote in quotes" :quote="quote" />
+    <Maxim v-for="quote in quotes" :quote="quote" @reload="refreshPage(true)" />
   </div>
 </template>
 

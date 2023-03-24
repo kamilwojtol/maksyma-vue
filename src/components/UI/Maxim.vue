@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
+import type { Quote } from "@/interfaces/IQuote";
 import { RouterLink } from "vue-router";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
 const props = defineProps({
-  quote: Object as PropType<any>,
+  quote: Object as PropType<Quote>,
 });
 </script>
 
@@ -14,13 +13,14 @@ const props = defineProps({
     <div class="maxim-tags">
       <RouterLink
         class="maxim-tag"
-        v-for="tag in props.quote?.tags"
+        v-for="tag in props.quote.tags"
         :to="{ name: 'list', params: { item: tag } }"
+        @click="$emit('reload')"
         >#{{ tag }}</RouterLink
       >
     </div>
-    <h3 class="maxim-title">{{ props.quote?.content }}</h3>
-    <p class="maxim-subtitle">{{ props.quote?.author }}</p>
+    <h3 class="maxim-title">{{ props.quote.content }}</h3>
+    <p class="maxim-subtitle">{{ props.quote.author }}</p>
   </div>
 </template>
 

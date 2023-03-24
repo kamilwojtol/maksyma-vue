@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, toRaw } from "vue";
 import { useFavouritesStore } from "@/stores/favourites";
 import Button from "../UI/Button.vue";
 import ShareButton from "../UI/ShareButton.vue";
 import Maxim from "../UI/Maxim.vue";
+import type { Quote } from "@/interfaces/IQuote";
 
-const favourites = ref<any>([]);
+const favourites = ref<Quote[]>([]);
 
-const favStore: any = useFavouritesStore();
+const favStore = useFavouritesStore();
 const searchQuery = ref<string>("");
 
 onMounted(() => {
@@ -23,9 +24,13 @@ function refreshFavourites() {
   favourites.value = favStore.getFavourites();
 }
 
+const hasFavourites = computed((): boolean => {
+  return Boolean(toRaw(favourites.value).length);
+});
+
 const filterFavs = computed(() => {
   if (searchQuery.value.length > 3) {
-    const filteredArray = favourites.value.filter((fav: any) => {
+    const filteredArray = favourites.value.filter((fav: Quote) => {
       return (
         fav.author.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
         fav.content.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -39,7 +44,7 @@ const filterFavs = computed(() => {
 </script>
 
 <template>
-  <div class="favourite-list">
+  <div class="favourite-list" v-if="hasFavourites">
     <h3 class="title">My favourite quotes</h3>
     <input type="text" v-model="searchQuery" :keydown="filterFavs" />
     <div
@@ -52,9 +57,9 @@ const filterFavs = computed(() => {
       <ShareButton :quote="favourite"> Share </ShareButton>
     </div>
   </div>
-  <!-- <div class="title title-error" v-else>
+  <div class="title title-error" v-else>
     You don't have any favourite quotes, add one in Home page 😊
-  </div> -->
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -79,6 +84,10 @@ const filterFavs = computed(() => {
   &-error {
     margin: 32px 0;
   }
+}
+
+.title-error {
+  padding: 0 20px;
 }
 
 .favourite-item {

@@ -6,11 +6,12 @@ import Button from "../UI/Button.vue";
 import ShareButton from "../UI/ShareButton.vue";
 import { useFavouritesStore } from "../../stores/favourites";
 import Loader from "../UI/Loader.vue";
+import type { Quote } from "@/interfaces/IQuote";
 
 const favourites = useFavouritesStore();
 
-const randomQuote = ref(<any>[]);
-const quoteHistory = ref(<any>[]);
+const randomQuote = ref<Quote>();
+const quoteHistory = ref<Quote[]>([]);
 const activeQuote = ref(0);
 const isLoading = ref(true);
 
@@ -39,7 +40,9 @@ const nextQuote = async () => {
     isLoading.value = true;
     await refreshQuote();
     isLoading.value = false;
-    favourites.isInFavourites(randomQuote.value);
+    if (randomQuote.value) {
+      favourites.isInFavourites(randomQuote.value);
+    }
   }
 };
 
@@ -47,12 +50,14 @@ onMounted(async () => {
   isLoading.value = false;
   await refreshQuote();
   isLoading.value = false;
-  favourites.isInFavourites(randomQuote.value);
+  if (randomQuote.value) {
+    favourites.isInFavourites(randomQuote.value);
+  }
 });
 </script>
 
 <template>
-  <div v-if="!isLoading" class="random-quote">
+  <div v-if="!isLoading && randomQuote" class="random-quote">
     <Maxim class="maxim-quote" :quote="randomQuote" />
     <div class="maxim-btn-panel">
       <Button @click="prevQuote" :disabled="activeQuote === 1">
@@ -60,7 +65,7 @@ onMounted(async () => {
       </Button>
       <Button
         :disabled="favourites.isInFavs"
-        @click="favourites.addToFavourites(randomQuote)"
+        @click="favourites.addToFavourites(randomQuote!)"
       >
         Add to Favourites
       </Button>
@@ -84,9 +89,11 @@ onMounted(async () => {
   flex-direction: row;
   justify-content: center;
   bottom: 8px;
+  width: 100%;
 
   @media (min-width: 768px) {
     left: calc(50% - 227px);
+    width: auto;
   }
 }
 

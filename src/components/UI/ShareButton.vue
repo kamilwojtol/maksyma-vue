@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import Button from "./Button.vue";
+import type { Quote } from "@/interfaces/IQuote";
+import type { PropType } from "vue";
 
 const props = defineProps({
   quote: {
-    type: Object,
+    type: Object as PropType<Quote>,
     required: true,
   },
 });
 
-function shareFavourite(quote: any) {
+function shareFavourite(quote: Quote) {
   if (navigator.share) {
     return navigator.share({
       title: "Maksyma",
