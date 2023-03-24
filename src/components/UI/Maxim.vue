@@ -15,7 +15,6 @@ const props = defineProps({
         class="maxim-tag"
         v-for="tag in props.quote.tags"
         :to="{ name: 'list', params: { item: tag } }"
-        @click="$emit('reload')"
         >#{{ tag }}</RouterLink
       >
     </div>

@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { RouterView } from "vue-router";
+import { RouterView, useRoute } from "vue-router";
 import Header from "./components/UI/Header.vue";
+
+const route = useRoute();
 </script>
 
 <template>
   <Header />
-  <RouterView />
+  <RouterView :key="route.fullPath" />
 </template>

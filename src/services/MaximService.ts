@@ -1,5 +1,3 @@
-import type { Quote } from "@/interfaces/IQuote";
-
 const URL = "https://api.quotable.io";
 
 const getRandomQuote = async () => {
